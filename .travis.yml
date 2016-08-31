@@ -10,7 +10,6 @@ env:
   global:
     - REGISTRY = repository.studionone.io
     - REPO = studionone/travis-flynn-test
-    - TAG = `if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
 deploy:
   provider: s3
@@ -24,6 +23,7 @@ deploy:
 script: composer test 
 
 before_install:
+  - TAG = `if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - echo $TAG
   - docker build -t studionone/travis-flynn-test:$TAG .
   - docker ps -a
