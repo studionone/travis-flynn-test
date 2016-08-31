@@ -21,10 +21,10 @@ before_install:
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD  repository.studionone.io;
+    docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD  repository.studionone.io:5000;
     docker push studionone/travis-flynn-test;
     fi
   - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-    docker login -u $DOCKER_PRODUCTION_USERNAME  -p $DOCKER_PRODUCTION_PASSWORD repository.studionone.io;
+    docker login -u $DOCKER_PRODUCTION_USERNAME  -p $DOCKER_PRODUCTION_PASSWORD repository.studionone.io:5000;
     docker push studionone/travis-flynn-test:develop;
     fi 
