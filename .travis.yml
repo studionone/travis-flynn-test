@@ -8,6 +8,8 @@ sudo: required
 services:
   - docker
 
+script: composer run test 
+
 before_install:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
     docker build -t studionone/travis-flynn-test:latest .;

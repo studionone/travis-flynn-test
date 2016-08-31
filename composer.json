@@ -1,0 +1,10 @@
+{
+    "require": {
+        "phpunit/phpunit": "5.5.4",
+        "monolog/monolog": "1.0.*"
+    },
+    "scripts": {
+        "test": "composer exec phpunit -- -c tests",
+        "test:unit": "composer exec phpunit -- -c tests --testsuite unit"
+    }
+}
