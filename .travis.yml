@@ -8,7 +8,7 @@ sudo: required
 services:
   - docker
 
-script: composer run test 
+script: composer test 
 
 before_install:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
