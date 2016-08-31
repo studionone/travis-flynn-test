@@ -31,4 +31,4 @@ before_install:
 after_success:
   - docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD $REGISTRY
   - docker tag $REPO:$TAG $REGISTRY/$REPO:$TAG
-  - docker push $REGISTRY/$REPO
+  - docker push $REGISTRY/$REPO:$TAG
