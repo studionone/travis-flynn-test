@@ -25,10 +25,10 @@ script: composer test
 before_install:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - echo $TAG
-  - docker build -t studionone/travis-flynn-test:$TAG .
+  - docker build -t $REPO:$TAG .
   - docker ps -a
 
 after_success:
   - docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD $REGISTRY
-  - docker tag $REPO:$COMMIT $REGISTRY/$REPO:$TAG
+  - docker tag $REPO:$TAG $REGISTRY/$REPO:$TAG
   - docker push $REGISTRY/$REPO
