@@ -2,11 +2,15 @@ language: php
 php:
   - '7.0'
 dist: xenial
-
 sudo: required
-
 services:
   - docker
+
+env:
+  global:
+    - REGISTRY = repository.studionone.io
+    - REPO = studionone/travis-flynn-test
+    - TAG = `if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
 deploy:
   provider: s3
@@ -14,21 +18,17 @@ deploy:
   secret_access_key: $S3_SECRET_KEY
   bucket: $S3_BUCKET
   skip_cleanup: true
+  acl: private
+  region: ap-southeast-2
 
 script: composer test 
 
 before_install:
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - echo $TAG
   - docker build -t studionone/travis-flynn-test:$TAG .
   - docker ps -a
-  - echo $TAG
 
 after_success:
-  - echo $TAG
-  - export REGISTRY=repository.studionone.io
-  - export REPO=studionone/travis-flynn-test
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD $REGISTRY
   - docker tag $REPO:$COMMIT $REGISTRY/$REPO:$TAG
-  - docker tag $REPO:$COMMIT $REGISTRY/$REPO:travis-$TRAVIS_BUILD_NUMBER
   - docker push $REGISTRY/$REPO
