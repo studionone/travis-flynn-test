@@ -21,8 +21,10 @@ before_install:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker build -t studionone/travis-flynn-test:$TAG .
   - docker ps -a
+  - echo $TAG
 
 after_success:
+  - echo $TAG
   - export REGISTRY=repository.studionone.io
   - export REPO=studionone/travis-flynn-test
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
