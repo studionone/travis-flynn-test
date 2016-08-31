@@ -9,7 +9,10 @@ before_install:
   - export DOCKER_ENV=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "production"; else echo "development" ; fi`
   - docker build --build-arg env=$DOCKER_ENV -t $TRAVIS_REPO_SLUG:$TAG .
 
-script: docker run -i --rm $TRAVIS_REPO_SLUG:$TAG "cd /var/www ; composer test"
+install: true
+
+script: 
+  - docker run -i --rm $TRAVIS_REPO_SLUG:$TAG /bin/sh -c "cd /var/www && composer test"
 
 after_success:
   - docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD $REGISTRY
