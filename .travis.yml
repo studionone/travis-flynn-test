@@ -1,34 +1,17 @@
 language: php
-php:
-  - '7.0'
-dist: xenial
 sudo: required
 services:
   - docker
 
-env:
-  global:
-    - REGISTRY=repository.studionone.io
-    - REPO=studionone/travis-flynn-test
-
-deploy:
-  provider: s3
-  access_key_id: $S3_ACCESS_KEY
-  secret_access_key: $S3_SECRET_KEY
-  bucket: $S3_BUCKET
-  skip_cleanup: true
-  acl: private 
-  region: ap-southeast-2
-
-script: composer test 
-
 before_install:
+  - export REGISTRY=repository.studionone.io
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - echo $TAG
-  - docker build -t $REPO:$TAG .
-  - docker ps -a
+  - export DOCKER_ENV=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "production"; else echo "development" ; fi`
+  - docker build --build-arg env=$DOCKER_ENV -t $TRAVIS_REPO_SLUG:$TAG .
+
+script: docker run -i --rm $TRAVIS_REPO_SLUG:$TAG "cd /var/www ; composer test"
 
 after_success:
   - docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD $REGISTRY
-  - docker tag $REPO:$TAG $REGISTRY/$REPO:$TAG
-  - docker push $REGISTRY/$REPO:$TAG
+  - docker tag $TRAVIS_REPO_SLUG:$TAG $REGISTRY/$TRAVIS_REPO_SLUG:$TAG
+  - docker push $REGISTRY/$TRAVIS_REPO_SLUG:$TAG
