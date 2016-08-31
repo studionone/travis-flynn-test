@@ -8,7 +8,8 @@ sudo: required
 services:
   - docker
 
-script: composer test 
+script: phpunit
+#script: phpunit --bootstrap vendor/autoload.php -c tests
 
 before_install:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
