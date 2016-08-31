@@ -21,7 +21,7 @@ before_install:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker build -t studionone/travis-flynn-test:$TAG .
   - docker ps -a
-  - docker run studionone/travis-flynn-test:$TAG /bin/sh -c "cd /var/www; composer test;"
+  - docker run studionone/travis-flynn-test:$TAG /bin/sh -c "composer test"
 
 after_success:
   - export REGISTRY=repository.studionone.io
