@@ -5,10 +5,10 @@ services:
 
 before_install:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
-    docker build -t studionone/travis-flynn-test:latest .
+    docker build -t studionone/travis-flynn-test:latest .;
     fi
   - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-    docker build -t studionone/travis-flynn-test:develop .
+    docker build -t studionone/travis-flynn-test:develop .;
     fi
   - docker ps -a
 
