@@ -8,8 +8,7 @@ sudo: required
 services:
   - docker
 
-script: phpunit
-#script: phpunit --bootstrap vendor/autoload.php -c tests
+script: composer test 
 
 before_install:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then 
@@ -22,10 +21,10 @@ before_install:
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e="$DOCKER_PRODUCTION_EMAIL" -u="$DOCKER_PRODUCTION_USERNAME" -p="$DOCKER_PRODUCTION_PASSWORD" repository.studionone.io;
+    docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD  repository.studionone.io:5000/v2/;
     docker push studionone/travis-flynn-test;
     fi
   - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-    docker login -e="$DOCKER_PRODUCTION_EMAIL" -u="$DOCKER_PRODUCTION_USERNAME" -p="$DOCKER_PRODUCTION_PASSWORD" repository.studionone.io;
-    docker push studionone/travis-flynn-test;
+    docker login -u $DOCKER_PRODUCTION_USERNAME  -p $DOCKER_PRODUCTION_PASSWORD repository.studionone.io:5000/v2/;
+    docker push studionone/travis-flynn-test:develop;
     fi 
