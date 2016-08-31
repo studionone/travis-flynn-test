@@ -24,15 +24,14 @@ before_install:
   - if [ "$TRAVIS_BRANCH" == "develop" ]; then
     docker build -t studionone/travis-flynn-test:develop .;
     fi
-  - docker ps -a  
+  - docker ps -a
+  - docker run studionone/travis-flynn-test /bin/sh -c "cd /var/www; composer test
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD  repository.studionone.io;
-    docker push studionone/travis-flynn-test;
-    fi
-  - if [ "$TRAVIS_BRANCH" == "develop" ]; then
-    docker login -u $DOCKER_PRODUCTION_USERNAME  -p $DOCKER_PRODUCTION_PASSWORD repository.studionone.io;
-    docker tag studionone/travis-flynn-test:develop repository.studionone.io/travis-flynn-test:develop;
-    docker push repository.studionone.io/travis-flynn-test:develop;
-    fi 
+  - export REGISTRY=repository.studionone.io
+  - export REPO=studionone/travis-flynn-test
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker login -u $DOCKER_PRODUCTION_USERNAME -p $DOCKER_PRODUCTION_PASSWORD $REGISTRY
+  - docker tag $REGISTRY/$REPO:$COMMIT $REPO:$TAG
+  - docker tag $REGISTRY/$REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REGISTRY/$REPO
