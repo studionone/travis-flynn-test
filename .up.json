@@ -1,0 +1,6 @@
+{
+    "project": "travis-flynn-test",
+    "db": {
+        "type": "none"
+    }
+}
