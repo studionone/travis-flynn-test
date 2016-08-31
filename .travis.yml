@@ -8,8 +8,8 @@ services:
 
 env:
   global:
-    - REGISTRY = repository.studionone.io
-    - REPO = studionone/travis-flynn-test
+    - REGISTRY=repository.studionone.io
+    - REPO=studionone/travis-flynn-test
 
 deploy:
   provider: s3
@@ -17,13 +17,13 @@ deploy:
   secret_access_key: $S3_SECRET_KEY
   bucket: $S3_BUCKET
   skip_cleanup: true
-  acl: private
+  acl: private 
   region: ap-southeast-2
 
 script: composer test 
 
 before_install:
-  - export TAG = `if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - echo $TAG
   - docker build -t studionone/travis-flynn-test:$TAG .
   - docker ps -a
