@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - export REGISTRY=repository.studionone.io
+  - export REGISTRY=registry.studionone.io
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - export DOCKER_ENV=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "production"; else echo "development" ; fi`
   - docker build --build-arg env=$DOCKER_ENV -t $TRAVIS_REPO_SLUG:$TAG .
