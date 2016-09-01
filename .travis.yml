@@ -11,6 +11,7 @@ before_install:
 
 install: true
 
+# This is the section that you may need to configure your tests
 script: 
   - docker run -i --rm --entrypoint=/bin/sh $TRAVIS_REPO_SLUG:$TAG -c "cd /var/www && composer self-update && composer test"
 
