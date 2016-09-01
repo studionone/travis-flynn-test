@@ -2,7 +2,7 @@ FROM studionone/nginx-php7:latest
 
 MAINTAINER Greg Beaven <greg@studionone.com.au>
 
-RUN apt-get install php7.0-xml
+RUN apt-get install -y php7.0-xml
 
 ARG env
 
