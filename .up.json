@@ -1,5 +1,6 @@
 {
     "project": "travis-flynn-test",
+    "volume": ".:/opt/ignoreme",
     "db": {
         "type": "none"
     }
